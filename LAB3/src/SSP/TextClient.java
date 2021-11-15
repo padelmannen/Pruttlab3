@@ -25,7 +25,7 @@ public class TextClient {
                 if (Objects.equals(nextInput, "4")){
                     break;
                 }
-                ut.println((nextInput));
+                ut.println(nextInput);
                 ut.flush();
                 System.out.println(in.readLine());
 

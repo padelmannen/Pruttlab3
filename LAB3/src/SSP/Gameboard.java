@@ -59,6 +59,7 @@ class Gameboard extends JPanel {
             buttons[i].addActionListener(listener);
     }
 
+
     // reset yellow color
     void resetColor() {
         lastPlayed.setBackground(bgcolor);

@@ -5,13 +5,15 @@ import java.awt.event.*;
 import javax.swing.*;
 class Gameboard extends JPanel {
 
-    private Icon[] icons = {new ImageIcon("rock.gif"),
-            new ImageIcon("paper.gif"),
-            new ImageIcon("scissors.gif")};
+    private Icon[] icons = {
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/rock.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/paper.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/scissors.gif")))};
+
 
     private JButton[] buttons = new JButton[3];
     private JButton lastPlayed; // remembers last chosen button/gesture
-    private String[] texts = {"STEN", "PASE", "SAX"};
+    private String[] texts = {"STEN", "SAX", "PASE"};
     private JLabel upperMess, lowerMess, scorelabel;
     private int score;
     private Color bgcolor;
@@ -39,6 +41,7 @@ class Gameboard extends JPanel {
 
         for (int i = 0; i<3; i++){
             buttons[i] = new JButton(icons[i]);
+            buttons[i].setOpaque(true);
             buttons[i].setActionCommand(texts[i]);
             add(buttons[i]);
             // Store each button in a map with its text as key.

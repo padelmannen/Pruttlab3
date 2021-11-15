@@ -14,6 +14,9 @@ class RPSSkel extends JFrame implements ActionListener {
     BufferedReader in;
     PrintWriter out;
     JButton closebutton;
+    Map<String, Map<String, Integer>> resultMap = new HashMap<>();
+    String[] choice = {"STEN", "SAX", "PASE"};
+    String[] result = {"draw draw", "win lose", "lose win"};
 
     RPSSkel () {
         try {
@@ -21,10 +24,19 @@ class RPSSkel extends JFrame implements ActionListener {
             in=new BufferedReader
                     (new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
-
+            createResultMap();
 
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             closebutton = new JButton("Close");
+            closebutton.addActionListener(e -> {
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                System.exit(0);
+            });
+
             myboard = new Gameboard("Myself", this); // Must be changed
             computersboard = new Gameboard("Computer");
             JPanel boards = new JPanel();
@@ -41,43 +53,83 @@ class RPSSkel extends JFrame implements ActionListener {
         }
     }
 
+    private void createResultMap() {
+
+        Map <String, Integer> stoneMap = new HashMap<>();
+        stoneMap.put("STEN", 0);
+        stoneMap.put("SAX", 1);
+        stoneMap.put("PASE", 2);
+
+        Map <String, Integer> scissorMap = new HashMap<>();
+        scissorMap.put("STEN", 2);
+        scissorMap.put("SAX", 0);
+        scissorMap.put("PASE", 1);
+
+        Map <String, Integer> paperMap = new HashMap<>();
+        paperMap.put("STEN", 1);
+        paperMap.put("SAX", 2);
+        paperMap.put("PASE", 0);
+
+        resultMap.put("STEN", stoneMap);
+        resultMap.put("SAX", scissorMap);
+        resultMap.put("PASE", paperMap);
+
+    }
+
     public void actionPerformed(ActionEvent e) {
         JButton btn = (JButton) e.getSource();
 
         //myboard.markPlayed(btn);
         counter ++;
-        if (counter == 3){
-            makePlay(btn);
+        if (counter == 1){
+            myboard.setUpper("ONE");
+            myboard.resetColor();
+            computersboard.resetColor();
+        }
+        else if (counter == 2){
+            myboard.setUpper("TWO");
+        }
+        else if (counter == 3){
+            myboard.markPlayed(btn);
             counter = 0;
-
+            makePlay(btn);
         }
     }
     private void makePlay(JButton btn){
         myboard.markPlayed(btn);
-        String word = getWord(btn);
-        out.println(word);
+        String myHand = getHandChoice(btn);
+        myboard.setUpper(myHand);
+        out.println(myHand);
         out.flush();
         try {
-            String answer = in.readLine();
-            computersboard.markPlayed(answer);
+            String pcHand = in.readLine();
+            computersboard.setUpper(pcHand);
+            computersboard.markPlayed(pcHand);
+            winDecider(myHand, pcHand);
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    private String getWord (JButton btn){
+    private void winDecider(String myHand, String pcHand) {
+
+        int winner = resultMap.get(myHand).get(pcHand);
+        String[] res = result[winner].split(" ");
+        myboard.setLower(res[0]);
+        computersboard.setLower(res[1]);
+        if (winner == 1) {
+            myboard.wins();
+        }
+        else if (winner == 2) {
+            computersboard.wins();
+        }
+    }
+
+    private String getHandChoice (JButton btn){
         int y = btn.getY()/125;
-        String curChoice = null;
-        if(y == 0){
-            curChoice = "STEN";
-        }
-        if(y == 1){
-            curChoice = "SAX";
-        }
-        if(y == 2){
-            curChoice = "PÅSE";
-        }
+        String curChoice;
+        curChoice = choice[y];
         return curChoice;
     }
 

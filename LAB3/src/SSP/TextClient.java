@@ -22,7 +22,7 @@ public class TextClient {
 
             while (true){
                 String nextInput = scanner.next();
-                if (Objects.equals(nextInput, "4")){
+                if (Objects.equals(nextInput, "")){
                     break;
                 }
                 ut.println((nextInput));

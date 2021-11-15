@@ -15,7 +15,7 @@ public class TextClient {
             // du kör detta program (vilket i detta fall är samma dator som serverprogrammet körs på)
             Socket socket = new Socket("localhost", 4713);
             Scanner scanner = new Scanner (System.in);
-            BufferedReader in=new BufferedReader
+            BufferedReader in = new BufferedReader
                     (new InputStreamReader(socket.getInputStream()));
             PrintWriter ut = new PrintWriter(socket.getOutputStream());
             //ut.println("Charlotta");
@@ -34,6 +34,5 @@ public class TextClient {
             System.err.println(e);
         }
     }
-
 
 }

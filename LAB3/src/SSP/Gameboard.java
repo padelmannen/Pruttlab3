@@ -6,9 +6,9 @@ import javax.swing.*;
 class Gameboard extends JPanel {
 
     private Icon[] icons = {
-            new ImageIcon("rock.gif"),
-            new ImageIcon("paper.gif"),
-            new ImageIcon("scissors.gif")};
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/rock.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/paper.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/scissors.gif")))};
 
     private JButton[] buttons = new JButton[3];
     private JButton lastPlayed; // remembers last chosen button/gesture
@@ -38,8 +38,10 @@ class Gameboard extends JPanel {
         scorelabel = new JLabel("Score: 0", JLabel.CENTER);
         lower.add(lowerMess); lower.add(scorelabel);
 
+
         for (int i = 0; i<3; i++){
             buttons[i] = new JButton(icons[i]);
+            buttons[i].setOpaque(true);             // la till för att kunna se bakgrundsfärg
             buttons[i].setActionCommand(texts[i]);
             add(buttons[i]);
             // Store each button in a map with its text as key.
@@ -83,6 +85,7 @@ class Gameboard extends JPanel {
     void markPlayed(JButton b) {
         lastPlayed = b;
         lastPlayed.setBackground(Color.yellow);
+
     }
 
     // add one point and display new score

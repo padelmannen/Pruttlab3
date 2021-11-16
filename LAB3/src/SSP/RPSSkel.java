@@ -95,6 +95,7 @@ class RPSSkel extends JFrame implements ActionListener {
             makePlay(btn);
         }
     }
+
     private void makePlay(JButton btn){
         myboard.markPlayed(btn);
         String myHand = getHandChoice(btn);

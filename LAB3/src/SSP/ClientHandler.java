@@ -6,7 +6,7 @@ import java.util.*;
 
 
 class ClientHandler extends Thread {
-    static int numberOfPls=0;
+    //static int numberOfPls=0;
     BufferedReader in;
     PrintWriter out;
     public ClientHandler(Socket socket){

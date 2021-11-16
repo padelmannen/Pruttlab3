@@ -5,19 +5,15 @@ import java.awt.event.*;
 import javax.swing.*;
 class Gameboard extends JPanel {
 
-    private Icon[] icons = {
-            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/rock.gif"))),
-            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/paper.gif"))),
-            new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/scissors.gif")))};
 
-
-    private JButton[] buttons = new JButton[3];
+    private final JButton[] buttons = new JButton[3];
     private JButton lastPlayed; // remembers last chosen button/gesture
-    private String[] texts = {"STEN", "SAX", "PASE"};
-    private JLabel upperMess, lowerMess, scorelabel;
+    private final JLabel upperMess;
+    private final JLabel lowerMess;
+    private final JLabel scorelabel;
     private int score;
-    private Color bgcolor;
-    private HashMap<String,JButton> map = new HashMap<String,JButton>();
+    private final Color bgcolor;
+    private final HashMap<String,JButton> map = new HashMap<>();
 
 
     // Constructor that builds the board, used for computers board
@@ -40,8 +36,13 @@ class Gameboard extends JPanel {
         lower.add(lowerMess); lower.add(scorelabel);
 
         for (int i = 0; i<3; i++){
+            Icon[] icons = {
+                    new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/rock.gif"))),
+                    new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/scissors.gif"))),
+                    new ImageIcon(Objects.requireNonNull(getClass().getResource("/SSP/paper.gif")))};
             buttons[i] = new JButton(icons[i]);
             buttons[i].setOpaque(true);
+            String[] texts = {"STEN", "SAX", "PASE"};
             buttons[i].setActionCommand(texts[i]);
             add(buttons[i]);
             // Store each button in a map with its text as key.
